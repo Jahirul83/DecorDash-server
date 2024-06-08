@@ -29,7 +29,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const productsCollection = client.db("DecorDb").collection("products");
         const cartsCollection = client.db("DecorDb").collection("carts");
@@ -39,18 +39,19 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/carts', async (req, res) => {
+            const result = await cartsCollection.find().toArray();
+            res.send(result);
+        })
+
         app.post('/carts', async (req, res) => {
-            const  allCarts = req.body;
+            const allCarts = req.body;
             const result = await cartsCollection.insertMany(allCarts);
             res.send(result);
 
             // console.log(allCarts);
         })
 
-        app.get('/carts', async (req, res) => {
-            const result = await cartsCollection.find().toArray();
-            res.send(result);
-        })
 
 
 
